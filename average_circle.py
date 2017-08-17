@@ -32,15 +32,13 @@ def main(argv):
     ref_vel = (velocity[y][x])*1000.0 #convert velocity values from meters to mm
 #    print 'REF VEL: ' + str(ref_vel)
     atr = readfile.read_attribute(velocityfile)
-
-    csv_file = open('summary_mean_std.csv',"wb")
-    csv_file = open('summary_mean_std.csv',"wb")
+    ts_year = velocityfile.split('_')[2]
+    csv_file = open('summary_'+str(ts_year)+'years_mean_std.csv',"wb")
     writer = csv.writer(csv_file)
     writer.writerow(('Distance (km)', 'Time Series Length (years)','Average (mm/yr)', 'Standard Deviation (mm/yr)'))
 
     for i in range(snum_pix,(enum_pix+1)):
         dist= (i/10.0) #convert distance to km
-        ts_year = velocityfile.split('_')[2]
         crc_mask = ut.circle_index(atr,(y,x,i))
         masked_vel = (velocity[crc_mask])*1000.0 #convert velocity values from meters to mm
     #    print 'MASKED VEL: ' +str(masked_vel)
