@@ -36,7 +36,9 @@ for n in ts_list:
             f = h5py.File(velocity_file,'r')
             dset = f['velocity'].get('velocity')
             vel = asarray(dset)
+            print 'Velocity(before): '+str(velocities[year])
             velocities[year]=velocities[year]+vel
+            print 'Velocity(after): '+str(velocities[year])
 #            print 'VEL: '+ str(vel[0][0])
 #            print 'SUM: ' +str(summ[0][0])
 #            summ = vel+summ
