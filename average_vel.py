@@ -32,20 +32,21 @@ for n in ts_list:
         print 'Working on '+str(year)+' year long time series'
         spl_lst = glob.glob(directory+'/syn'+str(year)+'*')
         for i in spl_lst:
-            velocity_file = i +'/velocity_sim.h5'  
+            velocity_file = i +'/velocity_sim.h5'
             f = h5py.File(velocity_file,'r')
             dset = f['velocity'].get('velocity')
             vel = asarray(dset)
+            velocities[year]=velocities[year]+vel
 #            print 'VEL: '+ str(vel[0][0])
 #            print 'SUM: ' +str(summ[0][0])
-            summ = vel+summ
-        average = (summ)/(len(spl_lst))
-        del summ
-        velocities[year] = asarray(dset)
-        filename = 'average_vel_'+str(year)+'_years.h5'       
+#            summ = vel+summ
+#        average = (summ)/(len(spl_lst))
+#        del summ
+#        velocities[year] = asarray(dset)
+        average = velocities[year]/(len(spl_lst))
+        filename = 'average_vel_'+str(year)+'_years.h5'
         try:
             os.remove(filename)
         except OSError:
             pass
         write(average,atr,filename)
-        
