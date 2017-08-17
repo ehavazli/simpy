@@ -23,26 +23,24 @@ def main(argv):
     *******************************************
     '''
         sys.exit(1)
-    
+
     f = h5py.File(velocityfile,'r')
-    dset = f['velocity'].get('velocity')    
+    dset = f['velocity'].get('velocity')
     velocity = asarray(dset)
-    ref_vel = velocity[y][x]
+    ref_vel = (velocity[y][x])*1000.0 #convert velocity values from meters to mm
     print 'REF VEL: ' + str(ref_vel)
     atr = readfile.read_attribute(velocityfile)
     crc_mask = ut.circle_index(atr,(y,x,radius))
-    masked_vel = velocity[crc_mask]
+    masked_vel = (velocity[crc_mask])*1000.0 #convert velocity values from meters to mm
+    print 'MASKED VEL: ' +str(masked_vel)
     diff_masked_vel = (masked_vel) - (ref_vel)
-#    average_crc = average(masked_vel)
-    average_crc = average(diff_masked_vel*1000.0)
-#    std_masked = std(masked_vel,dtype=float64)
-    std_masked = std(diff_masked_vel*1000.0,dtype=float64)
+    print 'DIFF MASKED VEL: '+str(diff_masked_vel)
+    average_crc = mean(diff_masked_vel)
+    std_masked = std(diff_masked_vel,dtype=float64)
 #    print 'Masked Vel: ' + str(masked_vel)
 #    print 'Referenced Vel: ' +str(diff_masked_vel)
-    print 'Average of referenced vel in the circle: ' +str(average_crc)+'mm/yr'
+    print 'Average of referenced vel in the circle: ' +str(average_crc)+' mm/yr'
     print 'Standard Dev of referenced vel in the Circle: ' +str(std_masked)
 ###########################
 if __name__ == '__main__':
     main(sys.argv[1:])
-
-
