@@ -30,15 +30,14 @@ for n in ts_list:
     if year in velocities: pass
     else:
         print 'Working on '+str(year)+' year long time series'
+        velocities[year] = zeros((1000,1000))
         spl_lst = glob.glob(directory+'/syn'+str(year)+'*')
         for i in spl_lst:
             velocity_file = i +'/velocity_sim.h5'
             f = h5py.File(velocity_file,'r')
             dset = f['velocity'].get('velocity')
             vel = asarray(dset)
-            print 'Velocity(before): '+str(velocities[year])
             velocities[year]=velocities[year]+vel
-            print 'Velocity(after): '+str(velocities[year])
 #            print 'VEL: '+ str(vel[0][0])
 #            print 'SUM: ' +str(summ[0][0])
 #            summ = vel+summ
