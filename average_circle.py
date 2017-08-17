@@ -30,7 +30,7 @@ def main(argv):
     dset = f['velocity'].get('velocity')
     velocity = asarray(dset)
     ref_vel = (velocity[y][x])*1000.0 #convert velocity values from meters to mm
-    print 'REF VEL: ' + str(ref_vel)
+#    print 'REF VEL: ' + str(ref_vel)
     atr = readfile.read_attribute(velocityfile)
 
     csv_file = open('summary_mean_std.csv',"wb")
