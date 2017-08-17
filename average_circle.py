@@ -33,7 +33,7 @@ def main(argv):
     crc_mask = ut.circle_index(atr,(y,x,radius))
     masked_vel = (velocity[crc_mask])*1000.0 #convert velocity values from meters to mm
     print 'MASKED VEL: ' +str(masked_vel)
-    diff_masked_vel = (masked_vel) - (ref_vel)
+    diff_masked_vel = (ref_vel)-(masked_vel)
     print 'DIFF MASKED VEL: '+str(diff_masked_vel)
     average_crc = mean(diff_masked_vel)
     std_masked = std(diff_masked_vel,dtype=float64)
