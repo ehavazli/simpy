@@ -53,7 +53,7 @@ def main(argv):
     *******************************************
 
        Usage: simulate.py [number of images] [image acq interval] [directory] [signals to include] [strato noise level (in meters)/ turbulent multiplier]
-       
+
        signals to include: strato, turbulent, deformation, atmosphere_all, all
 
     *******************************************
@@ -62,11 +62,11 @@ def main(argv):
 
     syn_file_list = glob.glob(directory+'*.syn')
     orb_file_list = glob.glob(directory+'*.orb')
-    
+
     if os.path.exists(directory):
         shutil.rmtree(directory, ignore_errors=True)
         os.makedirs(directory)
-    else: 
+    else:
         os.makedirs(directory)
 ############################################################################################################
 
@@ -74,7 +74,7 @@ def main(argv):
     x1=linspace(0.,999.,num=1000, endpoint=True) # 1-D space
     y1=linspace(0.,999.,num=1000, endpoint=True)
     [X,Y]=meshgrid(x1,y1) # 2-D space
-    
+
     range2phase=4*pi/float(0.0562356467937372)         #double-way, 2*2*pi/lamda
     rand_phase = random.random((len(x1),len(x1)))
     rand_phase = rand_phase*range2phase
@@ -100,7 +100,7 @@ def main(argv):
 
 #    n_im=int(35) ## number of images to be generated
 #    interval = int(105) #time interval between images
-    
+
     btemp= []
     n=0
     A=0
@@ -122,7 +122,7 @@ def main(argv):
     strato_norm = dem_inv_norm-normalizer
     strato = 1.0-strato_norm
     #strato = (dem_tif/1000.0)*(-1)
-    
+
     fig = plt.figure()
     ax = fig.add_axes([0.1,0.1,0.8,0.8])
     title=fig.suptitle('Inverted and Normalized DEM')
@@ -131,7 +131,7 @@ def main(argv):
     #cb.set_label('meters')
     fig.savefig('strato.png')
     plt.close()
-    
+
     fig = plt.figure()
     ax = fig.add_axes([0.1,0.1,0.8,0.8])
     title=fig.suptitle('Resampled DEM')
@@ -140,13 +140,13 @@ def main(argv):
     cb.set_label('meters')
     fig.savefig('dem.png')
     plt.close()
-    
+
 ############################################################################################################
 
     n=0
     for b in btemp:
     #   par = [rx,ry,z,radius,pressure change,modulus(shear or youngs)]
-        par = [500,500,100,50,8,32000] ## 100m depth, 50 meters radius, 
+        par = [500,500,100,50,8,32000] ## 100m depth, 50 meters radius,
                                             ## 8(for 2mm/yr, 1200 for 35cm/yr) MPa pressure change, 32GPa shear modulus
                                             ## 190 depth, 500 radius (Socorro values for 100 meter pixel resolution)
                                             ## 0.025 pressure change (1.9 mm/yr pysar estimation, 2mm/yr matlab calculation)
@@ -158,23 +158,23 @@ def main(argv):
         deformation = pred.copy()
         deformation = (deformation/float(365))*float(b)
         deformation = range2phase*deformation
-        if n <= n_im: 
+        if n <= n_im:
             n += 1
-    
+
             if inc_signal == 'strato':
     #            random_strat = random.uniform((0),(4*pi))
                 strat_lvl = float(argv[5])
                 random_strat = random.normal(0,strat_lvl)
-                atmo_noise_strat = random_strat * strato * range2phase
+#                atmo_noise_strat = random_strat * strato * range2phase
 #                image = wrap((atmo_noise_strat))
-                image = ((random_strat * strato)) 
+                image = ((random_strat * strato))
             elif inc_signal == 'turbulent':
                 random_turb = int(random.uniform(1,700))
                 atmo_turb = scipy.io.loadmat('./atm_all/atmo_surf_turb_'+str(random_turb)+'.mat')
-                atmo_noise_turb = atmo_turb['fsurf'] * 0.1 * range2phase
+#                atmo_noise_turb = atmo_turb['fsurf'] * 0.1 * range2phase
 #                image = wrap(rand_phase+atmo_noise_turb)
                 random_multp =random.uniform(0,1)
-                turb_lvl = float(argv[5])  
+                turb_lvl = float(argv[5])
                 print random_multp
                 image = ((atmo_turb['fsurf'] * 0.1*random_multp*turb_lvl))
             elif inc_signal == 'deformation':
@@ -184,9 +184,9 @@ def main(argv):
                 random_turb = int(random.uniform(1,700))
                 strat_lvl = float(argv[5])
                 random_strat = random.normal(0,strat_lvl)
-                atmo_noise_strat = random_strat * strato * range2phase
+#                atmo_noise_strat = random_strat * strato * range2phase
                 atmo_turb = scipy.io.loadmat('./atm_all/atmo_surf_turb_'+str(random_turb)+'.mat')
-                atmo_noise_turb = atmo_turb['fsurf'] * 0.1 * range2phase
+#                atmo_noise_turb = atmo_turb['fsurf'] * 0.1 * range2phase
 #                image = wrap(rand_phase+atmo_noise_strat+atmo_noise_turb)
                 image = (atmo_turb['fsurf'] * 0.1)+(random_strat * strato)
             elif inc_signal == 'all':
@@ -203,15 +203,15 @@ def main(argv):
     *******************************************
 
        Usage: simulate.py [number of images] [image acq interval] [directory] [signals to include] [strato noise level (in meters)]
-       
+
        signals to include: strato, turbulent, deformation, atmosphere_all, all
 
     *******************************************
     '''
                 sys.exit(1)
-   
+
 ############################################################################################################
-    
+
 ############################################################################################################
 ####SAVE DATA####
             start_date = '000101'
@@ -221,12 +221,12 @@ def main(argv):
             mm = str(date_2[5:7])
             dd = str(date_2[8:10])
             date_2 = yy+mm+dd
-            
+
             f = open(directory+date_2+'.syn', 'wb')
             image.astype('float32').tofile(f)
             f.close()
 #            g.close()
-    
+
 #################
             print date_2+'.syn saved'
 ####PLOT####
@@ -377,9 +377,9 @@ def main(argv):
 
         else:
             break
-    
+
 ############################################################################################################
-    
+
 ############################################################################################################
 ####Generate Orbit files####
 #        files_list = glob.glob(directory+'*.syn')
@@ -392,5 +392,4 @@ def main(argv):
 #            print day[-10:-4]+'.orb saved'
 #######################################
 if __name__ == '__main__':
-    main(sys.argv[:])    
-
+    main(sys.argv[:])
