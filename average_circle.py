@@ -14,9 +14,8 @@ def main(argv):
         velocityfile = argv[0]
         y = int(argv[1])
         x = int(argv[2])
-        radius = int(argv[3])
-        snum_pix = int(argv[4])
-        enum_pix = int(argv[5])
+        snum_pix = int(argv[3])
+        enum_pix = int(argv[4])
     except:
         print '''
     *******************************************
