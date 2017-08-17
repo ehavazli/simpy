@@ -48,7 +48,7 @@ def main(argv):
     #    print 'DIFF MASKED VEL: '+str(diff_masked_vel)
         average_crc = mean(diff_masked_vel,dtype=float64)
         std_masked = std(diff_masked_vel,dtype=float64)
-        writer.writerow(dist,ts_year,average_crc,std_masked)
+        writer.writerow((dist,ts_year,average_crc,std_masked))
     #    print 'Masked Vel: ' + str(masked_vel)
     #    print 'Referenced Vel: ' +str(diff_masked_vel)
     #    print 'Average of referenced vel in the circle: ' +str(average_crc)+' mm/yr'
