@@ -44,7 +44,8 @@ for n in ts_list:
 #        average = (summ)/(len(spl_lst))
 #        del summ
 #        velocities[year] = asarray(dset)
-        average = velocities[year]/(len(spl_lst))
+#        average = velocities[year]/(len(spl_lst))
+        average = velocities[year]
         filename = 'average_vel_'+str(year)+'_years.h5'
         try:
             os.remove(filename)
