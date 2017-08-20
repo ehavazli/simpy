@@ -42,7 +42,7 @@ def main(argv):
 
             for i in range(snum_pix,(enum_pix+1)):
                 dist= (i/10.0) #convert distance to km
-                crc_mask = ut.circle_index(atr,(y,x,i))
+                crc_mask = ut.circle_index(atr,(k,k,i))
                 masked_vel = (velocity[crc_mask])*1000.0 #convert velocity values from meters to mm
             #    print 'MASKED VEL: ' +str(masked_vel)
                 diff_masked_vel = (ref_vel)-(masked_vel)
