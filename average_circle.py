@@ -36,7 +36,7 @@ def main(argv):
         #    print 'REF VEL: ' + str(ref_vel)
             atr = readfile.read_attribute(velocityfile)
             ts_year = velocityfile.split('_')[2]
-            csv_file = open('summary_'+str(ts_year)+'years_mean_std_'+str(y)+'.csv',"wb")
+            csv_file = open('summary_'+str(ts_year)+'years_mean_std_'+str(k)+'.csv',"wb")
             writer = csv.writer(csv_file)
             writer.writerow(('Distance (km)', 'Time Series Length (years)','Average (mm/yr)', 'Standard Deviation (mm/yr)'))
 
