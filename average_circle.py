@@ -27,6 +27,7 @@ def main(argv):
     '''
         sys.exit(1)
     file_lst = glob.glob('average*')
+    print file_lst
     for velocityfile in file_lst:
         f = h5py.File(velocityfile,'r')
         dset = f['velocity'].get('velocity')
