@@ -55,6 +55,7 @@ def main(argv):
             #    print 'Average of referenced vel in the circle: ' +str(average_crc)+' mm/yr'
             #    print 'Standard Dev of referenced vel in the Circle: ' +str(std_masked)
             csv_file.close()
+            print 'summary_'+str(ts_year)+'years_mean_std_'+str(k)+'.csv is written'
 ###########################
 if __name__ == '__main__':
     main(sys.argv[1:])
