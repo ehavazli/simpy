@@ -13,7 +13,7 @@ import glob
 def main(argv):
     try:
 #        velocityfile = argv[0]
-        y = int(argv[0])
+#        y = int(argv[0])
 #        x = int(argv[1])
         snum_pix = int(argv[1])
         enum_pix = int(argv[2])
@@ -21,13 +21,13 @@ def main(argv):
         print '''
     *******************************************
 
-       Usage: average_circle.py y start_num_pix end_num_pix
+       Usage: average_circle.py start_num_pix end_num_pix
 
     *******************************************
     '''
         sys.exit(1)
     file_lst = glob.glob('average*.h5')
-    for k in range(y,1000,100):
+    for k in range(100,1000,100):
         for velocityfile in file_lst:
             f = h5py.File(velocityfile,'r')
             dset = f['velocity'].get('velocity')
