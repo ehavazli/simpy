@@ -185,10 +185,11 @@ def main(argv):
                 strat_lvl = float(argv[5])
                 random_strat = random.normal(0,strat_lvl)
 #                atmo_noise_strat = random_strat * strato * range2phase
+                atmo_noise_strat = (random_strat * strato)
                 atmo_turb = scipy.io.loadmat('./atm_all/atmo_surf_turb_'+str(random_turb)+'.mat')
 #                atmo_noise_turb = atmo_turb['fsurf'] * 0.1 * range2phase
 #                image = wrap(rand_phase+atmo_noise_strat+atmo_noise_turb)
-                image = (atmo_turb['fsurf'] * 0.1)+(random_strat * strato)
+                image = (atmo_turb['fsurf'] * 0.1)+atmo_noise_strat
             elif inc_signal == 'all':
                 strat_lvl = argv[5]
                 random_turb = int(random.uniform(1,700))
