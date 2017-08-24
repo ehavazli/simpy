@@ -166,8 +166,9 @@ def main(argv):
                 strat_lvl = float(argv[5])
                 random_strat = random.normal(0,strat_lvl)
 #                atmo_noise_strat = random_strat * strato * range2phase
+                atmo_noise_strat = random_strat * strato
 #                image = wrap((atmo_noise_strat))
-                image = ((random_strat * strato))
+                image = atmo_noise_strat
             elif inc_signal == 'turbulent':
                 random_turb = int(random.uniform(1,700))
                 atmo_turb = scipy.io.loadmat('./atm_all/atmo_surf_turb_'+str(random_turb)+'.mat')
