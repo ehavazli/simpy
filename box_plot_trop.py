@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 def main(argv):
     try:
         directory = argv[1]
+        signal_type = argv[2]
     except:
         print '''
     *******************************************
@@ -64,6 +65,7 @@ def main(argv):
     plt.ylabel('mm/yr')
     plt.xlabel('Time Series Length')
     plt.ylim(-10,10)
+    ax.tick_params(labelsize=20)
 #    plt.xlim([(amin(vel_values)-2),(amax(vel_values)+2)])
     bp = ax.boxplot(vel_values,labels=labels, showfliers=False,whis=[2.5, 97.5])
     plt.setp(bp['boxes'], color='blue')
@@ -85,8 +87,24 @@ def main(argv):
         unc_label.append('('+r'$\pm$'+str(round((unc[i]/2),2))+')')
     ax2.set_xticklabels(unc_label,position=(0.945,0.945))
     ax2.tick_params(direction='in',length=0)
+    if signal_type == 'strato':
+        ax2.set_xlabel("Vertical Stratification Uncertainties")
+    elif signal_type = 'turbulent':
+        ax2.set_xlabel("Turbulence Mixing Uncertainties")
+    elif signal_type = 'combined':
+        ax2.set_xlabel("Combined Tropospheric Uncertainties")
+    else:
+                print '''
+    *******************************************
 
-    ax2.set_xlabel("Turbulence Mixing Uncertainties")
+       Usage: box_plot_trop.py [directory] [signal type]
+
+              directory : location of the TS folders
+              signal type: strato, turbulent, combined
+    *******************************************
+    '''
+        sys.exit(1)
+
 
 # Save the figure
     fig.savefig('box_plot.tiff', bbox_inches='tight', dpi = 300)

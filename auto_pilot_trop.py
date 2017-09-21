@@ -16,19 +16,20 @@ def main(argv):
         n_days=int(argv[3])
         noft = int(argv[4])
         signal = argv[5]
+        multip = float(argv[6])
     except:
         print '''
     *******************************************
 
-       Usage: auto_pilot.py [number of years to start] [number of years to end] [acquisition interval(days)] [number of tests] [signals to include]
+       Usage: auto_pilot.py [number of years to start] [number of years to end] [acquisition interval(days)] [number of tests] [signals to include] [multiplier]
 
               number of years to start: minimum length of time series
               number of years to end: maximum length of time series
               acquisition interval: number of days between acquisitions
               number of tests: number of time series to be simulated and run per year
               signals to include: type of the signal to include in the simulated acquisitions (strato, turbulent, deformation, atmosphere_all, all)
-
-    *******************************************
+              multiplier : 1 for standard turbulent 0.03 for standard stratified. Use stratified multiplier for atmosphere_all option
+   *******************************************
     '''
         sys.exit(1)
 
@@ -51,7 +52,7 @@ def main(argv):
             f.write('\n#BSUB -N')
 #            f.write('\n#BSUB -u e.havazli@rsmas.miami.edu')
             f.write('\ncd /projects/scratch/sinkhole/ehavazli/TSSAR/')
-            f.write('\nsimulate_test.py '+str(n_im)+' '+str(n_days)+' ./syn'+str(i)+'-'+str(n)+'/ '+ signal+' 1')
+            f.write('\nsimulate_test.py '+str(n_im)+' '+str(n_days)+' ./syn'+str(i)+'-'+str(n)+'/ '+ signal+' '+str(multip))
             f.write('\nsim2ref.py ./syn'+str(i)+'-'+str(n)+' 100 100')
             f.write('\ncd ./syn'+str(i)+'-'+str(n))
             f.write('\nload_ref2ts.py .')

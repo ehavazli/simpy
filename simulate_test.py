@@ -189,7 +189,8 @@ def main(argv):
                 atmo_noise_strat = (random_strat * strato)
                 atmo_turb = scipy.io.loadmat('./atm_all/atmo_surf_turb_'+str(random_turb)+'.mat')
 #                atmo_noise_turb = atmo_turb['fsurf'] * 0.1 * range2phase
-                atmo_noise_turb = atmo_turb['fsurf'] * 0.1
+                random_multp_turb =random.uniform(0,1)
+                atmo_noise_turb = atmo_turb['fsurf'] * 0.1 * random_multp_turb
 #                image = wrap(rand_phase+atmo_noise_strat+atmo_noise_turb)
                 image = atmo_noise_turb+atmo_noise_strat
             elif inc_signal == 'all':
@@ -236,11 +237,12 @@ def main(argv):
             if inc_signal == 'strato':
                 fig = plt.figure()
                 ax = fig.add_axes([0.1,0.1,0.8,0.8])
-                title=fig.suptitle(str(date_2)+" Stratified Atmospheric Noise: "+ str(random_strat))
+#                title=fig.suptitle(str(date_2)+" Vertical Stratification Delay Multiplier: "+ str(random_strat))
+                title=fig.suptitle("Vertical Stratification Delay Multiplier: "+ str(random_strat))
                 im = ax.imshow(atmo_noise_strat,cmap='rainbow',origin='lower')
     #        im = ax.imshow(atmo_noise_strat,cmap='jet',origin='lower')
                 cb = fig.colorbar(im)
-                cb.set_label('Phase')
+                cb.set_label('Meters')
                 fig.savefig(directory+date_2+'.atmo_noise_stra.png')
                 plt.close()
 #####################
@@ -250,7 +252,7 @@ def main(argv):
 #                im = ax.imshow(image,cmap='jet',vmin=-pi,vmax=pi,origin='lower')
                 im = ax.imshow(image,cmap='rainbow',origin='lower')
                 cb = fig.colorbar(im)
-                cb.set_label('Phase[radians]')
+                cb.set_label('Meters')
                 fig.savefig(directory+date_2+'.syn.png')
                 plt.close()
 #####################
@@ -266,8 +268,10 @@ def main(argv):
             elif inc_signal == 'turbulent':
                 fig = plt.figure()
                 ax = fig.add_axes([0.1,0.1,0.8,0.8])
-                title=fig.suptitle(str(date_2)+" Turbulent Atmospheric Noise")
-                im = ax.imshow(atmo_noise_turb,cmap='rainbow',origin='lower')
+                ax.tick_params(labelsize=20)
+#                title=fig.suptitle(str(date_2)+" Turbulence Mixing Delay Multiplier: "+str(random_multp))
+                title=fig.suptitle("Turbulence Mixing Delay Multiplier: "+str(random_multp))
+                im = ax.imshow(image,cmap='rainbow',origin='lower')
                 cb = fig.colorbar(im)
                 cb.set_label('Phase[radians]')
                 fig.savefig(directory+date_2+'.atmo_noise_turb.png')
@@ -275,6 +279,7 @@ def main(argv):
 
                 fig = plt.figure()
                 ax = fig.add_axes([0.1,0.1,0.8,0.8])
+                ax.tick_params(labelsize=20)
                 title=fig.suptitle(date_2)
 #                im = ax.imshow(image,cmap='jet',vmin=-pi,vmax=pi,origin='lower')
                 im = ax.imshow(image,cmap='rainbow',origin='lower')
@@ -308,20 +313,21 @@ def main(argv):
             elif inc_signal == 'atmosphere_all':
                 fig = plt.figure()
                 ax = fig.add_axes([0.1,0.1,0.8,0.8])
-                title=fig.suptitle(str(date_2)+" Stratified Atmospheric Noise: "+ str(random_strat))
+#                title=fig.suptitle(str(date_2)+" Stratified Atmospheric Noise: "+ str(random_strat))
+                title=fig.suptitle("Vertical Stratification Delay Multiplier: "+ str(("%.3f" % random_strat)))
                 im = ax.imshow(atmo_noise_strat,cmap='rainbow',origin='lower')
     #        im = ax.imshow(atmo_noise_strat,cmap='jet',origin='lower')
                 cb = fig.colorbar(im)
-                cb.set_label('Phase[radians]')
+                cb.set_label('Meters')
                 fig.savefig(directory+date_2+'.atmo_noise_stra.png')
                 plt.close()
 
                 fig = plt.figure()
                 ax = fig.add_axes([0.1,0.1,0.8,0.8])
-                title=fig.suptitle(str(date_2)+" Turbulent Atmospheric Noise")
+                title=fig.suptitle("Turbulence Mixing Delay Multiplier: "+str(("%.3f" % random_multp_turb)))
                 im = ax.imshow(atmo_noise_turb,cmap='rainbow',origin='lower')
                 cb = fig.colorbar(im)
-                cb.set_label('Phase[radians]')
+                cb.set_label('Meters')
                 fig.savefig(directory+date_2+'.atmo_noise_turb.png')
                 plt.close()
 
@@ -332,7 +338,7 @@ def main(argv):
                 im = ax.imshow(image,cmap='rainbow',origin='lower')
 
                 cb = fig.colorbar(im)
-                cb.set_label('Phase[radians]')
+                cb.set_label('Meters')
                 fig.savefig(directory+date_2+'.syn.png')
                 plt.close()
 
