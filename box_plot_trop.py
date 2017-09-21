@@ -62,8 +62,8 @@ def main(argv):
 
 # Create a figure instance
     fig, ax = plt.subplots(1)
-    plt.ylabel('mm/yr')
-    plt.xlabel('Time Series Length')
+    plt.ylabel('Uncertainty (mm/yr)')
+    plt.xlabel('Time Series Length (years)')
     plt.ylim(-10,10)
     ax.tick_params(labelsize=20)
 #    plt.xlim([(amin(vel_values)-2),(amax(vel_values)+2)])
