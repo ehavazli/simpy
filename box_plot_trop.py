@@ -29,7 +29,7 @@ def main(argv):
     *******************************************
     '''
         sys.exit(1)
-        
+
 
     ts_list = glob.glob(directory+'/syn*')
     labels = []
@@ -44,21 +44,21 @@ def main(argv):
             print 'Working on '+str(year)+' year long time series'
             spl_lst = glob.glob(directory+'/syn'+str(year)+'*')
             data_to_plot = []
-            average = zeros((1000,1000)) 
+            average = zeros((1000,1000))
             for i in spl_lst:
-                velocity_file = i +'/velocity_sim.h5'  
+                velocity_file = i +'/velocity_sim.h5'
                 f = h5py.File(velocity_file,'r')
                 dset = f['velocity'].get('velocity')
 
                 dset_hist = (asarray(dset)*1000.0)
                 bin_values = arange(start=-5, stop=5, step=0.01)
-                plt.hist(dset_hist,facecolor='blue')
+                plt.hist(dset_hist,bins=bin_values,facecolor='blue')
                 plt.savefig(i+'/hist.tiff', bbox_inches='tight', dpi = 300)
                 plt.close()
-               
+
                 data_to_plot.extend(dset)
                 average += dset
-            velocities[year] = asarray(data_to_plot) 
+            velocities[year] = asarray(data_to_plot)
 
     sorted_velocities = collections.OrderedDict(sorted(velocities.items()))
     vel_values = []
@@ -79,7 +79,7 @@ def main(argv):
     plt.setp(bp['whiskers'], color='blue', linestyle='--')
     plt.setp(bp['medians'], color = 'red')
     whis = [item.get_ydata()[1] for item in bp['whiskers']]
-    n = -2 
+    n = -2
     unc = []
     for i in range(0,(len(whis)/2)):
         n=n+2
@@ -128,4 +128,4 @@ def main(argv):
 
 #######################################
 if __name__ == '__main__':
-    main(sys.argv[:])  
+    main(sys.argv[:])
