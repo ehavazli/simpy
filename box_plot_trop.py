@@ -69,14 +69,12 @@ def main(argv):
     for key, values in sorted_velocities.iteritems():
         vel_values.append(values*1000.0) #Convert from meters to milimeters
         labels.append(key)
-
 # Create a figure instance
     fig, ax = plt.subplots(1)
     plt.ylabel('Uncertainty (mm/yr)',fontsize=14)
     plt.xlabel('Time Series Length (years)',fontsize=14)
     plt.ylim(-10,10)
     ax.tick_params(labelsize=12)
-#    plt.xlim([(amin(vel_values)-2),(amax(vel_values)+2)])
     bp = ax.boxplot(vel_values,labels=labels, showfliers=False,whis=[2.5, 97.5])
     plt.setp(bp['boxes'], color='blue')
     plt.setp(bp['whiskers'], color='blue', linestyle='--')
@@ -121,15 +119,15 @@ def main(argv):
     plt.close()
 
 ##Make histograms
-
-    fig,ax =  plt.subplots(1)
-    bin_values = arange(start=-4, stop=4, step=0.01)
-    vel_values=asarray(vel_values)
-    plt.hist(vel_values.flatten(),bins=bin_values,normed=1,color='blue',histtype='stepfilled')
-    plt.ylabel('PDF',fontsize=14)
-    plt.xlabel('Velocity (mm/yr)',fontsize=14)
-    fig.savefig('hist_all.tiff', bbox_inches='tight', dpi = 300)
-    plt.close()
+    for i in range(0,len(vel_values)):
+        fig,ax =  plt.subplots(1)
+        bin_values = arange(start=-4, stop=4, step=0.01)
+#        vel_values=asarray(vel_values[i])
+        plt.hist(vel_values[i].flatten(),bins=bin_values,normed=1,color='blue',histtype='stepfilled')
+        plt.ylabel('PDF',fontsize=14)
+        plt.xlabel('Velocity (mm/yr)',fontsize=14)
+        fig.savefig('hist_all_'+str(labels[i])+'_years.tiff', bbox_inches='tight', dpi = 300)
+        plt.close()
 
 
 
