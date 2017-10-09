@@ -56,7 +56,7 @@ def main(argv):
                 plt.hist(dset_hist.flatten(),bins=bin_values,normed=1,color='blue',histtype='stepfilled')
                 plt.ylabel('PDF',fontsize=14)
                 plt.xlabel('Velocity (mm/yr)',fontsize=14)
-                plt.savefig(i+'/hist.tiff', bbox_inches='tight', dpi = 300)
+                plt.savefig(i+'/hist_'+str(i[-4:])+'.tiff', bbox_inches='tight', dpi = 300)
                 plt.close()
 
                 data_to_plot.extend(dset)
