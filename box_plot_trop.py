@@ -51,8 +51,11 @@ def main(argv):
                 dset = f['velocity'].get('velocity')
 
                 dset_hist = (asarray(dset)*1000.0)
-                bin_values = arange(start=-5, stop=5, step=0.01)
-                plt.hist(dset_hist,bins=bin_values,facecolor='blue')
+                bin_values = arange(start=-10, stop=10, step=0.01)
+#                plt.hist(dset_hist.flatten(),normed=1,color='blue',histtype='stepfilled')
+                plt.hist(dset_hist.flatten(),bins=bin_values,normed=1,color='blue',histtype='stepfilled')
+                plt.ylabel('PDF',fontsize=14)
+                plt.xlabel('Velocity (mm/yr)',fontsize=14)
                 plt.savefig(i+'/hist.tiff', bbox_inches='tight', dpi = 300)
                 plt.close()
 
@@ -120,8 +123,12 @@ def main(argv):
 ##Make histograms
 
     fig,ax =  plt.subplots(1)
-    plt.hist(vel_values)
-    fig.savefig('hist.tiff', bbox_inches='tight', dpi = 300)
+    bin_values = arange(start=-4, stop=4, step=0.01)
+    vel_values=asarray(vel_values)
+    plt.hist(vel_values.flatten(),bins=bin_values,normed=1,color='blue',histtype='stepfilled')
+    plt.ylabel('PDF',fontsize=14)
+    plt.xlabel('Velocity (mm/yr)',fontsize=14)
+    fig.savefig('hist_all.tiff', bbox_inches='tight', dpi = 300)
     plt.close()
 
 
