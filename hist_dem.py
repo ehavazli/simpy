@@ -19,7 +19,7 @@ normalizer = norm_min/(norm_max-norm_min)
 strato_norm = dem_inv_norm-normalizer
 strato = 1.0-strato_norm
 
-#bin_values = arange(start=-5, stop=5, step=0.001)
+bin_values = arange(start=1000, stop=3500, step=1)
 #                plt.hist(dset_hist.flatten(),normed=1,color='blue',histtype='stepfilled')
 #plt.hist(dem_inv.flatten(),bins=bin_values,normed=1,color='blue',histtype='stepfilled')
 plt.hist(dem_inv.flatten(),normed=1,color='blue',histtype='stepfilled')
@@ -28,7 +28,8 @@ plt.xlabel('Height',fontsize=14)
 plt.savefig('./hist_dem.tiff', bbox_inches='tight', dpi = 300)
 plt.close()
 
-plt.hist(strato.flatten(),normed=1,color='blue',histtype='stepfilled')
+bin_values = arange(start=0, stop=1, step=0.001)
+plt.hist(strato.flatten(),normed=1,bins=bin_values,color='blue',histtype='stepfilled')
 plt.ylabel('PDF',fontsize=14)
 plt.xlabel('Height',fontsize=14)
 plt.savefig('./hist_strato.tiff', bbox_inches='tight', dpi = 300)
