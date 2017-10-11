@@ -25,11 +25,11 @@ strato = 1.0-strato_norm
 plt.hist(dem_inv.flatten(),normed=1,color='blue',histtype='stepfilled')
 plt.ylabel('PDF',fontsize=14)
 plt.xlabel('Height',fontsize=14)
-plt.savefig(i+'/hist_dem.tiff', bbox_inches='tight', dpi = 300)
+plt.savefig('./hist_dem.tiff', bbox_inches='tight', dpi = 300)
 plt.close()
 
 plt.hist(strato.flatten(),normed=1,color='blue',histtype='stepfilled')
 plt.ylabel('PDF',fontsize=14)
 plt.xlabel('Height',fontsize=14)
-plt.savefig(i+'/hist_strato.tiff', bbox_inches='tight', dpi = 300)
+plt.savefig('./hist_strato.tiff', bbox_inches='tight', dpi = 300)
 plt.close()
