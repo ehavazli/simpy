@@ -50,14 +50,13 @@ def main(argv):
                 f = h5py.File(velocity_file,'r')
                 dset = f['velocity'].get('velocity')
 
-                dset_hist = (asarray(dset)*1000.0)
-                bin_values = arange(start=-5, stop=5, step=0.001)
-#                plt.hist(dset_hist.flatten(),normed=1,color='blue',histtype='stepfilled')
-                plt.hist(dset_hist.flatten(),bins=bin_values,normed=1,color='blue',histtype='stepfilled')
-                plt.ylabel('PDF',fontsize=14)
-                plt.xlabel('Velocity (mm/yr)',fontsize=14)
-                plt.savefig(i+'/hist_'+str(i[-4:])+'.tiff', bbox_inches='tight', dpi = 300)
-                plt.close()
+#                dset_hist = (asarray(dset)*1000.0)
+#                bin_values = arange(start=-5, stop=5, step=0.001)
+#                plt.hist(dset_hist.flatten(),bins=bin_values,normed=1,color='blue',histtype='stepfilled')
+#                plt.ylabel('PDF',fontsize=14)
+#                plt.xlabel('Velocity (mm/yr)',fontsize=14)
+#                plt.savefig(i+'/hist_'+str(i[-4:])+'.tiff', bbox_inches='tight', dpi = 300)
+#                plt.close()
 
                 data_to_plot.extend(dset)
                 average += dset
@@ -119,15 +118,15 @@ def main(argv):
     plt.close()
 
 ##Make histograms
-    for i in range(0,len(vel_values)):
-        fig,ax =  plt.subplots(1)
-        bin_values = arange(start=-4, stop=4, step=0.01)
-#        vel_values=asarray(vel_values[i])
-        plt.hist(vel_values[i].flatten(),bins=bin_values,normed=1,color='blue',histtype='stepfilled')
-        plt.ylabel('PDF',fontsize=14)
-        plt.xlabel('Velocity (mm/yr)',fontsize=14)
-        fig.savefig('hist_all_'+str(labels[i])+'_years.tiff', bbox_inches='tight', dpi = 300)
-        plt.close()
+#    for i in range(0,len(vel_values)):
+#        fig,ax =  plt.subplots(1)
+#        bin_values = arange(start=-4, stop=4, step=0.01)
+##        vel_values=asarray(vel_values[i])
+#        plt.hist(vel_values[i].flatten(),bins=bin_values,normed=1,color='blue',histtype='stepfilled')
+#        plt.ylabel('PDF',fontsize=14)
+#        plt.xlabel('Velocity (mm/yr)',fontsize=14)
+#        fig.savefig('hist_all_'+str(labels[i])+'_years.tiff', bbox_inches='tight', dpi = 300)
+#        plt.close()
 
 
 
