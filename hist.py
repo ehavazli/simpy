@@ -53,7 +53,7 @@ def main(argv):
                 plt.savefig(i+'/hist_'+str(i[-4:])+'.tiff', bbox_inches='tight', dpi = 300)
                 plt.close()
             velocities[year] = asarray(data_to_plot)
-            plt.hist(data_to_plot.flatten(),bins=bin_values,normed=1,color='blue',histtype='stepfilled')
+            plt.hist(data_to_plot,bins=bin_values,normed=1,color='blue',histtype='stepfilled')
             plt.ylabel('PDF',fontsize=14)
             plt.xlabel('Velocity (mm/yr)',fontsize=14)
             plt.savefig('./hist_'+str(year)+'_combined.tiff', bbox_inches='tight', dpi = 300)
