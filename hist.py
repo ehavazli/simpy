@@ -45,7 +45,7 @@ def main(argv):
                 dset = f['velocity'].get('velocity')
 
                 dset_hist = (asarray(dset)*1000.0)
-                bin_values = arange(start=-5, stop=5, step=0.001)
+                bin_values = arange(start=-2, stop=2, step=0.001)
                 plt.hist(dset_hist.flatten(),bins=bin_values,normed=1,color='blue',histtype='stepfilled')
                 plt.ylabel('PDF',fontsize=14)
                 plt.xlabel('Velocity (mm/yr)',fontsize=14)
