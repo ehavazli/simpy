@@ -39,11 +39,12 @@ def main(argv):
         else:
             print 'Working on '+str(year)+' year long time series'
             spl_lst = glob.glob(directory+'/syn'+str(year)+'*')
+            data_to_plot = []
             for i in spl_lst:
                 velocity_file = i +'/velocity_sim.h5'
                 f = h5py.File(velocity_file,'r')
                 dset = f['velocity'].get('velocity')
-
+                data_to_plot.extend(dset)
                 dset_hist = (asarray(dset)*1000.0)
                 bin_values = arange(start=-2, stop=2, step=0.001)
                 plt.hist(dset_hist.flatten(),bins=bin_values,normed=1,color='blue',histtype='stepfilled')
@@ -51,6 +52,6 @@ def main(argv):
                 plt.xlabel('Velocity (mm/yr)',fontsize=14)
                 plt.savefig(i+'/hist_'+str(i[-4:])+'.tiff', bbox_inches='tight', dpi = 300)
                 plt.close()
-
+            velocities[year] = asarray(data_to_plot)    
 if __name__ == '__main__':
     main(sys.argv[:])
