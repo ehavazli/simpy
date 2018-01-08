@@ -37,7 +37,7 @@ def main(argv):
     average = {}
     velocities = {}
     total_sum = zeros((1000,1000))
-    diff_avg = []
+    diff_avg = zeros((1000,1000))
     for n in ts_list:
         spl = n.split('syn')
         pick_yr = spl[-1]
