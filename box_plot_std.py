@@ -37,6 +37,7 @@ def main(argv):
     average = {}
     velocities = {}
     total_sum = []
+    diff_avg = []
     for n in ts_list:
         spl = n.split('syn')
         pick_yr = spl[-1]
@@ -59,7 +60,7 @@ def main(argv):
                 f = h5py.File(velocity_file,'r')
                 dset = f['velocity'].get('velocity')
                 diff_avg += (dset - average[year])**2
-            std[year] = sqrt(diff_avg/len(spl_lst))
+            std[year] = sqrt(array(diff_avg)/len(spl_lst))
             velocities[year] = asarray(data_to_plot)
 
     sorted_velocities = collections.OrderedDict(sorted(std.items()))
