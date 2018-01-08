@@ -36,7 +36,7 @@ def main(argv):
     std = {}
     average = {}
     velocities = {}
-    total_sum = []
+    total_sum = zeros((1000,1000))
     diff_avg = []
     for n in ts_list:
         spl = n.split('syn')
