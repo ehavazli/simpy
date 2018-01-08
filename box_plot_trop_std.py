@@ -114,7 +114,7 @@ def main(argv):
 
 
 # Save the figure
-    fig.savefig('box_plot_Std.tiff', bbox_inches='tight', dpi = 300)
+    fig.savefig('box_plot_VelStd.tiff', bbox_inches='tight', dpi = 300)
     plt.close()
 
 ##Make histograms
