@@ -33,6 +33,7 @@ def main(argv):
 
     ts_list = glob.glob(directory+'/syn*')
     labels = []
+    std = {}
     average = {}
     velocities = {}
     for n in ts_list:
@@ -49,27 +50,24 @@ def main(argv):
                 velocity_file = i +'/velocity_sim.h5'
                 f = h5py.File(velocity_file,'r')
                 dset = f['velocity'].get('velocity')
-
-#                dset_hist = (asarray(dset)*1000.0)
-#                bin_values = arange(start=-5, stop=5, step=0.001)
-#                plt.hist(dset_hist.flatten(),bins=bin_values,normed=1,color='blue',histtype='stepfilled')
-#                plt.ylabel('PDF',fontsize=14)
-#                plt.xlabel('Velocity (mm/yr)',fontsize=14)
-#                plt.savefig(i+'/hist_'+str(i[-4:])+'.tiff', bbox_inches='tight', dpi = 300)
-#                plt.close()
-
                 data_to_plot.extend(dset)
                 total_sum += dset
             average[year] = total_sum/len(spl_lst)
+            for i in spl_lst:
+                velocity_file = i +'/velocity_sim.h5'
+                f = h5py.File(velocity_file,'r')
+                dset = f['velocity'].get('velocity')
+                diff_avg += (dset - average[year])**2
+            std[year] = sqrt(diff_avg/len(spl_lst))
             velocities[year] = asarray(data_to_plot)
 
-    sorted_velocities = collections.OrderedDict(sorted(average.items()))
-    avg_values = []
+    sorted_velocities = collections.OrderedDict(sorted(std.items()))
+    std_values = []
     # sorted_velocities = collections.OrderedDict(sorted(velocities.items()))
     # vel_values = []
 
     for key, values in sorted_velocities.iteritems():
-        avg_values.append(values*1000.0) #Convert from meters to milimeters
+        std_values.append(values*1000.0) #Convert from meters to milimeters
         labels.append(key)
 # Create a figure instance
     fig, ax = plt.subplots(1)
@@ -77,7 +75,7 @@ def main(argv):
     plt.xlabel('Time Series Length (years)',fontsize=14)
     plt.ylim(-10,10)
     ax.tick_params(labelsize=12)
-    bp = ax.boxplot(avg_values,labels=labels, showfliers=False,whis=[2.5, 97.5])
+    bp = ax.boxplot(std_values,labels=labels, showfliers=False,whis=[2.5, 97.5])
     plt.setp(bp['boxes'], color='blue')
     plt.setp(bp['whiskers'], color='blue', linestyle='--')
     plt.setp(bp['medians'], color = 'red')
