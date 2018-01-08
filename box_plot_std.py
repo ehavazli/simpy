@@ -53,7 +53,7 @@ def main(argv):
                 dset = f['velocity'].get('velocity')
                 data_to_plot.extend(dset)
                 total_sum += dset
-            average[year] = total_sum/len(spl_lst)
+            average[year] = array(total_sum)/len(spl_lst)
             for i in spl_lst:
                 velocity_file = i +'/velocity_sim.h5'
                 f = h5py.File(velocity_file,'r')
