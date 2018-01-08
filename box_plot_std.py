@@ -36,6 +36,7 @@ def main(argv):
     std = {}
     average = {}
     velocities = {}
+    total_sum = []
     for n in ts_list:
         spl = n.split('syn')
         pick_yr = spl[-1]
