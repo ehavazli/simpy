@@ -81,6 +81,9 @@ def main(argv):
     plt.setp(bp['boxes'], color='blue')
     plt.setp(bp['whiskers'], color='blue', linestyle='--')
     plt.setp(bp['medians'], color = 'red')
+    median = [item.get_ydata()[1] for item in bp['medians']]
+    print 'MEDIAN: '+str(median)
+    sys.exit()
     whis = [item.get_ydata()[1] for item in bp['whiskers']]
     n = -2
     unc = []
