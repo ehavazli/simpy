@@ -83,7 +83,7 @@ def main(argv):
     unc = []
     for i in range(0,(len(whis)/2)):
         n=n+2
-        unc.append((abs(whis[n])) + (abs(whis[n+1])))
+        unc.append(abs((abs(whis[n])) - (abs(whis[n+1]))))
 
     ax2 = ax.twiny()
     ax1Xs = ax.get_xticks()
