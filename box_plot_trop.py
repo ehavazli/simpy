@@ -84,6 +84,7 @@ def main(argv):
     for i in range(0,(len(whis)/2)):
         n=n+2
         unc.append(abs((whis[n]) - (whis[n+1])))
+    print 'UNC: '+str(unc)
 
     ax2 = ax.twiny()
     ax1Xs = ax.get_xticks()
@@ -92,6 +93,7 @@ def main(argv):
     unc_label=[]
     for i in range(0,(len(unc))):
         unc_label.append('('+r'$\pm$'+str(round((unc[i]/2),2))+')')
+    print 'UNC_LABEL: '+str(unc_label)
     ax2.set_xticklabels(unc_label,position=(0.945,0.945))
     ax2.tick_params(direction='in',length=0,labelsize=12)
     if signal_type == 'strato':
