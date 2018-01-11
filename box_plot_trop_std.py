@@ -21,7 +21,9 @@ def main(argv):
         print '''
     *******************************************
 
-       Usage: box_plot.py [directory] [signal type]
+       Prepare box plots using the velocity_simStd.h5 files
+       Calculation is SD = sqrt(sd^2+...+sd^2)/100
+       Usage: box_plot_trop_std.py [directory] [signal type]
 
               directory : location of the TS folders
               signal type: strato, turbulent, combined
@@ -33,40 +35,32 @@ def main(argv):
 
     ts_list = glob.glob(directory+'/syn*')
     labels = []
-    velocities = {}
+    standard_dev = {}
     for n in ts_list:
         spl = n.split('syn')
         pick_yr = spl[-1]
         year,test = pick_yr.split('-')
         year = int(year)
-        if year in velocities: pass
+        if year in standard_dev: pass
         else:
             print 'Working on '+str(year)+' year long time series'
             spl_lst = glob.glob(directory+'/syn'+str(year)+'*')
             data_to_plot = []
-            average = zeros((1000,1000))
+            SD_1 = zeros((1000,1000))
             for i in spl_lst:
                 velocity_file = i +'/velocity_simStd.h5'
                 f = h5py.File(velocity_file,'r')
                 dset = f['velocity'].get('velocity')
-
-#                dset_hist = (asarray(dset)*1000.0)
-#                bin_values = arange(start=-5, stop=5, step=0.001)
-#                plt.hist(dset_hist.flatten(),bins=bin_values,normed=1,color='blue',histtype='stepfilled')
-#                plt.ylabel('PDF',fontsize=14)
-#                plt.xlabel('Velocity (mm/yr)',fontsize=14)
-#                plt.savefig(i+'/hist_'+str(i[-4:])+'.tiff', bbox_inches='tight', dpi = 300)
-#                plt.close()
-
+                sd_sq = asarray(dset)**2
                 data_to_plot.extend(dset)
-                average += dset
-            velocities[year] = asarray(data_to_plot)
+                SD_1 += sd_sq
+            SD = sqrt(SD_1)/len(spl_lst)
+            standard_dev[year] = SD
+    sorted_standard_dev = collections.OrderedDict(sorted(standard_dev.items()))
+    standard_dev_values = []
 
-    sorted_velocities = collections.OrderedDict(sorted(velocities.items()))
-    vel_values = []
-
-    for key, values in sorted_velocities.iteritems():
-        vel_values.append(values*1000.0) #Convert from meters to milimeters
+    for key, values in sorted_standard_dev.iteritems():
+        standard_dev_values.append(values*1000.0) #Convert from meters to milimeters
         labels.append(key)
 # Create a figure instance
     fig, ax = plt.subplots(1)
@@ -74,10 +68,19 @@ def main(argv):
     plt.xlabel('Time Series Length (years)',fontsize=14)
     plt.ylim(-10,10)
     ax.tick_params(labelsize=12)
-    bp = ax.boxplot(vel_values,labels=labels, showfliers=False,whis=[2.5, 97.5])
+
+    # intervals = []
+    # for i in range(0,len(vel_values)):
+    #     mn, sg = mean(vel_values[i]), std(vel_values[i])
+    #     conf_int = stats.norm.interval(0.95, loc=mn, scale=sg)
+    #     intervals.append(conf_int)
+    # print 'Confidence Interval: ' + str(intervals)
+
+    medianprops = dict(linestyle=None,linewidth=0,color = 'red')
+    bp = ax.boxplot(standard_dev_values,labels=labels,meanline = True,showmeans=True,showfliers=False,medianprops=medianprops,whis=[2.5, 97.5])
     plt.setp(bp['boxes'], color='blue')
     plt.setp(bp['whiskers'], color='blue', linestyle='--')
-    plt.setp(bp['medians'], color = 'red')
+    plt.setp(bp['means'], linestyle='-',color = 'red')
     whis = [item.get_ydata()[1] for item in bp['whiskers']]
     n = -2
     unc = []
@@ -116,19 +119,6 @@ def main(argv):
 # Save the figure
     fig.savefig('box_plot_VelStd.tiff', bbox_inches='tight', dpi = 300)
     plt.close()
-
-##Make histograms
-#    for i in range(0,len(vel_values)):
-#        fig,ax =  plt.subplots(1)
-#        bin_values = arange(start=-4, stop=4, step=0.01)
-##        vel_values=asarray(vel_values[i])
-#        plt.hist(vel_values[i].flatten(),bins=bin_values,normed=1,color='blue',histtype='stepfilled')
-#        plt.ylabel('PDF',fontsize=14)
-#        plt.xlabel('Velocity (mm/yr)',fontsize=14)
-#        fig.savefig('hist_all_'+str(labels[i])+'_years.tiff', bbox_inches='tight', dpi = 300)
-#        plt.close()
-
-
 
 #######################################
 if __name__ == '__main__':
