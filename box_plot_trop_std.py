@@ -32,7 +32,6 @@ def main(argv):
     '''
         sys.exit(1)
 
-
     ts_list = glob.glob(directory+'/syn*')
     labels = []
     standard_dev = {}
@@ -56,6 +55,16 @@ def main(argv):
                 SD_1 += sd_sq
             SD = sqrt(SD_1)/len(spl_lst)
             standard_dev[year] = SD
+
+            h5file = 'average_std_'+str(year)+'_years.h5'
+            g = h5py.File(h5file,'w')
+            hh = g.create_group('velocity')
+            dset = hh.create_dataset('velocity', data=SD, compression='gzip')
+
+            for key, value in f['velocity'].attrs.iteritems():
+                hh.attrs[key] = value
+            g.close()
+
     sorted_standard_dev = collections.OrderedDict(sorted(standard_dev.items()))
     standard_dev_values = []
 
@@ -107,10 +116,13 @@ def main(argv):
         print '''
     *******************************************
 
-       Usage: box_plot_trop.py [directory] [signal type]
+       Prepare box plots using the velocity_simStd.h5 files
+       Calculation is SD = sqrt(sd^2+...+sd^2)/100
+       Usage: box_plot_trop_std.py [directory] [signal type]
 
               directory : location of the TS folders
               signal type: strato, turbulent, combined
+
     *******************************************
     '''
         sys.exit(1)
