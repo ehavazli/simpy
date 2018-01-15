@@ -8,6 +8,7 @@ import matplotlib
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 from osgeo import gdal
+import h5py
 
 ds = gdal.Open("socorro_test.tif")
 dem_tif = array(ds.GetRasterBand(1).ReadAsArray())
@@ -20,17 +21,21 @@ strato_norm = dem_inv_norm-normalizer
 strato = 1.0-strato_norm
 
 bin_values = arange(start=1000, stop=3500, step=1)
-#                plt.hist(dset_hist.flatten(),normed=1,color='blue',histtype='stepfilled')
-#plt.hist(dem_inv.flatten(),bins=bin_values,normed=1,color='blue',histtype='stepfilled')
-plt.hist(dem_inv.flatten(),normed=1,color='blue',histtype='stepfilled')
+fig = plt.figure()
+ax1 = fig.add_subplot(211)
+ax1.hist(dem_inv.flatten(),bins=bin_values,normed=1,color='grey',histtype='stepfilled')
 plt.ylabel('PDF',fontsize=14)
 plt.xlabel('Height',fontsize=14)
-plt.savefig('./hist_dem.tiff', bbox_inches='tight', dpi = 300)
-plt.close()
 
-bin_values = arange(start=0, stop=1, step=0.001)
-plt.hist(strato.flatten(),normed=1,bins=bin_values,color='blue',histtype='stepfilled')
+velocity_file ='./velocity_sim.h5'
+f = h5py.File(velocity_file,'r')
+dset = f['velocity'].get('velocity')
+dset_hist = (asarray(dset)*1000.0)
+bin_values = arange(start=-3, stop=3, step=0.001)
+ax2 = fig.add_subplot(212)
+ax2.hist(dset_hist.flatten(),bins=bin_values,normed=1,color='blue',histtype='step')
 plt.ylabel('PDF',fontsize=14)
-plt.xlabel('Height',fontsize=14)
-plt.savefig('./hist_strato.tiff', bbox_inches='tight', dpi = 300)
+plt.xlabel('Velocity',fontsize=14)
+fig.tight_layout()
+plt.savefig('./hist_dem.tiff', bbox_inches='tight', dpi = 300)
 plt.close()
