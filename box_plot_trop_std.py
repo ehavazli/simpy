@@ -78,18 +78,12 @@ def main(argv):
     plt.ylim(-10,10)
     ax.tick_params(labelsize=12)
 
-    # intervals = []
-    # for i in range(0,len(vel_values)):
-    #     mn, sg = mean(vel_values[i]), std(vel_values[i])
-    #     conf_int = stats.norm.interval(0.95, loc=mn, scale=sg)
-    #     intervals.append(conf_int)
-    # print 'Confidence Interval: ' + str(intervals)
-
     medianprops = dict(linestyle=None,linewidth=0,color = 'red')
     bp = ax.boxplot(standard_dev_values,labels=labels,meanline = True,showmeans=True,showfliers=False,medianprops=medianprops,whis=[2.5, 97.5])
     plt.setp(bp['boxes'], color='blue')
     plt.setp(bp['whiskers'], color='blue', linestyle='--')
     plt.setp(bp['means'], linestyle='-',color = 'red')
+
     whis = [item.get_ydata()[1] for item in bp['whiskers']]
     n = -2
     unc = []
@@ -129,7 +123,7 @@ def main(argv):
 
 
 # Save the figure
-    fig.savefig('box_plot_VelStd.tiff', bbox_inches='tight', dpi = 300)
+    fig.savefig('box_plot_AvgStd.tiff', bbox_inches='tight', dpi = 300)
     plt.close()
 
 #######################################
