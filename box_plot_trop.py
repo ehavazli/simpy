@@ -6,6 +6,7 @@ import sys
 import glob
 import h5py
 from numpy import *
+from scipy import stats
 from operator import itemgetter
 import collections
 import matplotlib
@@ -44,22 +45,11 @@ def main(argv):
             print 'Working on '+str(year)+' year long time series'
             spl_lst = glob.glob(directory+'/syn'+str(year)+'*')
             data_to_plot = []
-            average = zeros((1000,1000))
             for i in spl_lst:
                 velocity_file = i +'/velocity_sim.h5'
                 f = h5py.File(velocity_file,'r')
                 dset = f['velocity'].get('velocity')
-
-#                dset_hist = (asarray(dset)*1000.0)
-#                bin_values = arange(start=-5, stop=5, step=0.001)
-#                plt.hist(dset_hist.flatten(),bins=bin_values,normed=1,color='blue',histtype='stepfilled')
-#                plt.ylabel('PDF',fontsize=14)
-#                plt.xlabel('Velocity (mm/yr)',fontsize=14)
-#                plt.savefig(i+'/hist_'+str(i[-4:])+'.tiff', bbox_inches='tight', dpi = 300)
-#                plt.close()
-
                 data_to_plot.extend(dset)
-                average += dset
             velocities[year] = asarray(data_to_plot)
 
     sorted_velocities = collections.OrderedDict(sorted(velocities.items()))
@@ -74,17 +64,19 @@ def main(argv):
     plt.xlabel('Time Series Length (years)',fontsize=14)
     plt.ylim(-10,10)
     ax.tick_params(labelsize=12)
-    bp = ax.boxplot(vel_values,labels=labels, showfliers=False,whis=[2.5, 97.5])
+
+    medianprops = dict(linestyle=None, linewidth=0,color = 'red')
+    bp = ax.boxplot(vel_values,labels=labels,meanline = True,showmeans=True,showfliers=False,medianprops=medianprops,whis=[2.5, 97.5])
     plt.setp(bp['boxes'], color='blue')
     plt.setp(bp['whiskers'], color='blue', linestyle='--')
-    plt.setp(bp['medians'], color = 'red')
+    plt.setp(bp['means'], linestyle='-',color = 'red')
+
     whis = [item.get_ydata()[1] for item in bp['whiskers']]
     n = -2
     unc = []
     for i in range(0,(len(whis)/2)):
         n=n+2
         unc.append(abs((whis[n]) - (whis[n+1])))
-    print 'UNC: '+str(unc)
 
     ax2 = ax.twiny()
     ax1Xs = ax.get_xticks()
@@ -93,7 +85,6 @@ def main(argv):
     unc_label=[]
     for i in range(0,(len(unc))):
         unc_label.append('('+r'$\pm$'+str(round((unc[i]/2),2))+')')
-    print 'UNC_LABEL: '+str(unc_label)
     ax2.set_xticklabels(unc_label,position=(0.945,0.945))
     ax2.tick_params(direction='in',length=0,labelsize=12)
     if signal_type == 'strato':
