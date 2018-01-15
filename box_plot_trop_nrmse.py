@@ -21,9 +21,9 @@ def main(argv):
         print '''
     *******************************************
 
-       Prepare box plots using the velocity_simStd.h5 files
-       Calculation is SD = sqrt(sd^2+...+sd^2)/100
-       Usage: box_plot_trop_std.py [directory] [signal type]
+       Prepare box plots using the velocity_simNRmse.h5 files
+
+       Usage: box_plot_trop_nrmse.py [directory] [signal type]
 
               directory : location of the TS folders
               signal type: strato, turbulent, combined
@@ -74,15 +74,8 @@ def main(argv):
     fig, ax = plt.subplots(1)
     plt.ylabel('Uncertainty (mm/yr)',fontsize=14)
     plt.xlabel('Time Series Length (years)',fontsize=14)
-    plt.ylim(-10,10)
+#    plt.ylim(-10,10)
     ax.tick_params(labelsize=12)
-
-    # intervals = []
-    # for i in range(0,len(vel_values)):
-    #     mn, sg = mean(vel_values[i]), std(vel_values[i])
-    #     conf_int = stats.norm.interval(0.95, loc=mn, scale=sg)
-    #     intervals.append(conf_int)
-    # print 'Confidence Interval: ' + str(intervals)
 
     medianprops = dict(linestyle=None,linewidth=0,color = 'red')
     bp = ax.boxplot(nrmse_values,labels=labels,meanline = True,showmeans=True,showfliers=False,medianprops=medianprops,whis=[2.5, 97.5])
