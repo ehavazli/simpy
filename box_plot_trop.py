@@ -60,13 +60,14 @@ def main(argv):
         labels.append(key)
 # Create a figure instance
     fig, ax = plt.subplots(1)
-    plt.ylabel('Uncertainty (mm/yr)',fontsize=14)
+    plt.ylabel('Propagated Error (mm/yr)',fontsize=14)
     plt.xlabel('Time Series Length (years)',fontsize=14)
     plt.ylim(-10,10)
     ax.tick_params(labelsize=12)
 
     medianprops = dict(linestyle=None, linewidth=0,color = 'red')
-    bp = ax.boxplot(vel_values,labels=labels,meanline = True,showmeans=True,showfliers=False,medianprops=medianprops,whis=[2.5, 97.5])
+
+    bp = ax.boxplot(vel_values,labels=labels,meanline=True,showmeans=True,showfliers=False,medianprops=medianprops,whis=[2.5, 97.5])
     plt.setp(bp['boxes'], color='blue')
     plt.setp(bp['whiskers'], color='blue', linestyle='--')
     plt.setp(bp['means'], linestyle='-',color = 'red')

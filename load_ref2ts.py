@@ -25,8 +25,8 @@ def main(argv):
 
 #directory = './syn30/' 
     dateList = glob.glob(directory+'*.ref')
-    h5file = directory+'timeseries_sim.h5'
-    f = h5py.File(h5file)
+    h5file = (directory+'timeseries_sim.h5')
+    f = h5py.File(h5file,'w')
     d_2 = []
     gg = f.create_group('timeseries')
     print dateList

@@ -74,7 +74,7 @@ def main(argv):
     fig, ax = plt.subplots(1)
     plt.ylabel('Uncertainty (mm/yr)',fontsize=14)
     plt.xlabel('Time Series Length (years)',fontsize=14)
-    plt.ylim(-10,10)
+#    plt.ylim(-10,10)
     ax.tick_params(labelsize=12)
 
     # intervals = []

@@ -34,13 +34,14 @@ def main(argv):
         sys.exit(1)
 
     for i in xrange(start_yr,end_yr+1):
-        n_im = int(math.ceil((365.0/35.0)*i))
+        n_im = int(math.ceil((365.0/n_days)*i))
         for n in xrange(0,noft):
             x = os.path.basename('TS'+str(i)+'-'+str(n))
+            print 'Number of images: '+str(n_im)+' scenes'
+            print 'Acquisition interval: '+str(n_days)+' days'
 
             fname=x+'.process'
             f = open(fname,'w')
-
             f.write('#! /bin/csh')
             f.write('\n#BSUB -J '+x)
             f.write('\n#BSUB -o '+x+'.o%J')
