@@ -54,10 +54,12 @@ def main(argv):
                     dist.append(sqrt(((s_y-y)*y_res)**2+((s_x-x)*x_res)**2))
         # print years+' '+str(len(std_lst))+' '+str(len(dist))
         std_pix[int(years)] = [std_lst,dist]
-
-    x = arange(0,360000,20000)
-    n_range = (360000/20000)-1
-    color=iter(cm.jet(linspace(0,1,8)))
+    x_first = arange(0,50000,5000)
+    x_sec = arange(40000,100000,5000)
+    x_thrd = arange(100000,360000,20000)
+    x = concatenate((x_first,x_sec[1:],x_thrd),axis=0)
+    n_range = len(x) - 1
+    color=iter(cm.jet_r(linspace(0,1,8)))
 
     for key, value in sorted(std_pix.iteritems()):
         print 'Working on plots of '+str(key)+' years data'
@@ -77,7 +79,7 @@ def main(argv):
 #        avg.insert(0,0)
 #        avg_er.insert(0,0)
         x_plt = x[1:]
-        print 'X: '+str(x)
+        print 'X: '+str(x_plt)
         print 'AVG: '+str(len(avg))
         # print 'AVG_ER: '+str(avg_er)
         # plt.scatter(x/1000.0,array(avg)*10000.0,c=c,label=(str(key)+' years'))
