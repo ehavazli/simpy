@@ -62,7 +62,7 @@ def main(argv):
     fig, ax = plt.subplots(1)
     plt.ylabel('Propagated Error (mm/yr)',fontsize=14)
     plt.xlabel('Time Series Length (years)',fontsize=14)
-    plt.ylim(-10,10)
+    plt.ylim(-6,6)
     ax.tick_params(labelsize=12)
 
     medianprops = dict(linestyle=None, linewidth=0,color = 'red')
@@ -89,11 +89,11 @@ def main(argv):
     ax2.set_xticklabels(unc_label,position=(0.945,0.945))
     ax2.tick_params(direction='in',length=0,labelsize=12)
     if signal_type == 'strato':
-        ax2.set_xlabel("Vertical Stratification Uncertainties",fontsize=16)
+        ax2.set_xlabel("Vertical Stratification Delay Only",fontsize=16)
     elif signal_type == 'turbulent':
-        ax2.set_xlabel("Turbulence Mixing Uncertainties",fontsize=16)
+        ax2.set_xlabel("Turbulence Mixing Delay Only",fontsize=16)
     elif signal_type == 'combined':
-        ax2.set_xlabel("Combined Tropospheric Uncertainties",fontsize=16)
+        ax2.set_xlabel("Combined Tropospheric Delay",fontsize=16)
     else:
         print '''
     *******************************************
