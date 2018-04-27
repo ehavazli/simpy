@@ -55,7 +55,7 @@ def main(argv):
         # print years+' '+str(len(std_lst))+' '+str(len(dist))
         std_pix[int(years)] = [std_lst,dist]
     x_first = arange(0,50000,5000)
-    x_sec = arange(40000,100000,5000)
+    x_sec = arange(40000,100000,10000)
     x_thrd = arange(100000,360000,20000)
     x = concatenate((x_first,x_sec[1:],x_thrd),axis=0)
     n_range = len(x) - 1
@@ -85,6 +85,7 @@ def main(argv):
         # plt.scatter(x/1000.0,array(avg)*10000.0,c=c,label=(str(key)+' years'))
         plt.errorbar(x_plt/1000.0,array(avg)*100000.0,array(avg_er)*100000.0,c=c,marker='o',xerr = None,ls='none',label=(str(key)+' years'))
     plt.legend()
+    plt.axis([0, 350,0,8])
     plt.savefig(directory+'/STDvsDIST.png',bbox_inches="tight",dpi=600)
 
 
