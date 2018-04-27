@@ -89,9 +89,9 @@ def main(argv):
     ax2.set_xticklabels(unc_label,position=(0.945,0.945))
     ax2.tick_params(direction='in',length=0,labelsize=12)
     if signal_type == 'strato':
-        ax2.set_xlabel("Vertical Stratification Delay Only",fontsize=16)
+        ax2.set_xlabel("Vertical Stratification Only",fontsize=16)
     elif signal_type == 'turbulent':
-        ax2.set_xlabel("Turbulence Mixing Delay Only",fontsize=16)
+        ax2.set_xlabel("Turbulence Mixing Only",fontsize=16)
     elif signal_type == 'combined':
         ax2.set_xlabel("Combined Tropospheric Delay",fontsize=16)
     else:
