@@ -49,7 +49,7 @@ def main(argv):
         directory = argv[3]+'/'
         inc_signal = argv[4]
     except:
-        print '''
+        print ('''
     *******************************************
 
        Usage: simulate.py [number of images] [image acq interval] [directory] [signals to include] [strato noise level (in meters)/ turbulent multiplier]
@@ -57,7 +57,7 @@ def main(argv):
        signals to include: strato, turbulent, deformation, atmosphere_all, all
 
     *******************************************
-    '''
+    ''')
         sys.exit(1)
 
     syn_file_list = glob.glob(directory+'*.syn')
@@ -176,7 +176,7 @@ def main(argv):
 #                image = wrap(rand_phase+atmo_noise_turb)
                 random_multp =random.uniform(0,1)
                 turb_lvl = float(argv[5])
-                print random_multp
+                print (random_multp)
                 image = ((atmo_turb['fsurf'] * 0.1*random_multp*turb_lvl))
             elif inc_signal == 'deformation':
 #                image = wrap(rand_phase+deformation)
@@ -203,7 +203,7 @@ def main(argv):
 #                image = wrap(rand_phase+deformation+(atmo_noise_strat)+(atmo_noise_turb))
                 image = (deformation+(random_strat * strato)+(atmo_turb['fsurf'] * 0.1))
             else:
-                print '''
+                print ('''
     *******************************************
 
        Usage: simulate.py [number of images] [image acq interval] [directory] [signals to include] [strato noise level (in meters)]
@@ -211,7 +211,7 @@ def main(argv):
        signals to include: strato, turbulent, deformation, atmosphere_all, all
 
     *******************************************
-    '''
+    ''')
                 sys.exit(1)
 
 ############################################################################################################
@@ -232,7 +232,7 @@ def main(argv):
 #            g.close()
 
 #################
-            print date_2+'.syn saved'
+            print (date_2+'.syn saved')
 ####PLOT####
             if inc_signal == 'strato':
                 fig = plt.figure()
