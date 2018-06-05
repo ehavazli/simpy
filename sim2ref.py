@@ -20,18 +20,18 @@ def main(argv):
         y = int(argv[2])
         x = int(argv[3])
     except:
-        print '''
+        print ('''
     *******************************************
 
        Usage: sim2ref.py [directory] [y] [x]
-      
+
               directory: directory to read .syn files
               y: seeding pixel y coordinate
               x: seeding pixel x coordinate
-       
+
 
     *******************************************
-    '''
+    ''')
         sys.exit(1)
     factor = -1*float(0.0562356467937372)/(4.*pi)
     date=[]
@@ -58,7 +58,7 @@ def main(argv):
 #    sar2_seed = sar2
     ####
 #    print sar1[100][100]
-#    print sar2[100][100] 
+#    print sar2[100][100]
         ts_test = sar1_seed-sar2_seed
 #    print ts_test[100][100]
 #    ts_test = wrap(ts_test)
@@ -83,7 +83,7 @@ def main(argv):
         cb = fig.colorbar(im)
         fig.savefig(directory+filename+'.png')
         plt.close()
-        print 'Referenced syn saved: '+ filename 
+        print ('Referenced syn saved: '+ filename)
 
 #######################################
 if __name__ == '__main__':
