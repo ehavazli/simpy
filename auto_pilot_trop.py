@@ -18,7 +18,7 @@ def main(argv):
         signal = argv[5]
         multip = float(argv[6])
     except:
-        print '''
+        print ('''
     *******************************************
 
        Usage: auto_pilot.py [number of years to start] [number of years to end] [acquisition interval(days)] [number of tests] [signals to include] [multiplier]
@@ -30,15 +30,15 @@ def main(argv):
               signals to include: type of the signal to include in the simulated acquisitions (strato, turbulent, deformation, atmosphere_all, all)
               multiplier : 1 for standard turbulent 0.03 for standard stratified. Use stratified multiplier for atmosphere_all option
    *******************************************
-    '''
+    ''')
         sys.exit(1)
 
     for i in xrange(start_yr,end_yr+1):
         n_im = int(math.ceil((365.0/n_days)*i))
         for n in xrange(0,noft):
             x = os.path.basename('TS'+str(i)+'-'+str(n))
-            print 'Number of images: '+str(n_im)+' scenes'
-            print 'Acquisition interval: '+str(n_days)+' days'
+            print ('Number of images: '+str(n_im)+' scenes')
+            print ('Acquisition interval: '+str(n_days)+' days')
 
             fname=x+'.process'
             f = open(fname,'w')
