@@ -4,6 +4,7 @@
 import os
 import sys
 from numpy import *
+from scipy.optimize import leastsq
 import glob
 import h5py
 import random
@@ -17,14 +18,16 @@ def main(argv):
         directory = argv[0]
         e_y = int(argv[1])
         e_x = int(argv[2])
+        modelFit = argv[3]
     except:
+        modelFit = ''
         print '''
     *******************************************
 
-       Usage: dist_std.py [directory] [end_y] [end_x]
+       Usage: dist_std.py [directory] [end_y] [end_x] [modelFit]
        e_y = end iteration at this y
        e_x = end iteration at this x
-
+       modelFit = log (logarothmic), pow (power-law)
     *******************************************
     '''
         sys.exit(1)
@@ -79,13 +82,60 @@ def main(argv):
 #        avg.insert(0,0)
 #        avg_er.insert(0,0)
         x_plt = x[1:]
-        print 'X: '+str(x_plt)
-        print 'AVG: '+str(len(avg))
+        # print 'X: '+str(x_plt)
+        # print 'AVG: '+str(len(avg))
+        # print 'PLOTTED: '+str(array(avg)*100000.0)
         # print 'AVG_ER: '+str(avg_er)
         # plt.scatter(x/1000.0,array(avg)*10000.0,c=c,label=(str(key)+' years'))
-        plt.errorbar(x_plt/1000.0,array(avg)*100000.0,array(avg_er)*100000.0,c=c,marker='o',xerr = None,ls='none',label=(str(key)+' years'))
-    plt.legend()
-    plt.axis([0, 350,0,8])
+        if modelFit == 'log':
+            testY = (array(avg)*100000.0)
+            testX = x_plt/1000.0
+            testYerr = array(avg_er)*100000.0
+            logFit = polyfit(log(testX),testY,1)
+            testFit = logFit[0]*log(testX)+logFit[1]
+            plt.errorbar(testX,testY,testYerr,c=c,marker='o',xerr = None,ls='none',label=(str(key)+' years'))
+            plt.plot(testX,testFit,c=c,label=(str(round(logFit[0],2))+str(round(logFit[1],2))+'log(D)'))
+        elif modelFit == 'pow':
+            # Define function for calculating a power law
+            powerlaw = lambda x, amp, index: amp * (x**index)
+            logx = log10(x_plt/1000.0)
+#            logx = logx[isnan(logx)]
+            logy = log10(array(avg)*100000.0)
+#            logy = logy[isnan(logy)]
+            yerr = array(avg_er)*100000.0
+            xdata = x_plt/1000.0
+            ydata = array(avg)*100000.0
+            logyerr = yerr / ydata
+
+            # define our (line) fitting function
+            fitfunc = lambda p, x: p[0] + p[1] * x
+            errfunc = lambda p, x, y, err: (y - fitfunc(p, x)) / err
+
+            pinit = [1.0, -1.0]
+            out = leastsq(errfunc, pinit,
+                       args=(logx, logy, logyerr), full_output=1)
+
+            pfinal = out[0]
+            covar = out[1]
+            print pfinal
+            print covar
+
+            index = pfinal[1]
+            amp = 10.0**pfinal[0]
+
+            indexErr = sqrt( covar[1][1] )
+            ampErr = sqrt( covar[0][0] ) * amp
+            ##########
+            # Plotting data
+            ##########
+            plt.plot(xdata, powerlaw(xdata, amp, index),c=c)     # Fit
+            plt.errorbar(xdata, ydata, yerr=yerr, c=c,marker='o',xerr = None,ls='none',label=(str(key)+' years'))  # Data
+            # plt.text(5, 6.5, 'Ampli = %5.2f +/- %5.2f' % (amp, ampErr))
+            # plt.text(5, 5.5, 'Index = %5.2f +/- %5.2f' % (index, indexErr))
+        else:
+            plt.errorbar(x_plt/1000.0,array(avg)*100000.0,array(avg_er)*100000.0,c=c,marker='o',xerr = None,ls='none',label=(str(key)+' years'))
+    plt.legend(ncol=2,loc=2)
+    plt.axis([0, 350,0,10])
     plt.savefig(directory+'/STDvsDIST.png',bbox_inches="tight",dpi=600)
 
 
