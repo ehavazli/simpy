@@ -6,34 +6,33 @@ import sys
 import glob
 import h5py
 from numpy import *
-from scipy import stats
-from operator import itemgetter
+#from scipy import stats
+#from operator import itemgetter
 import collections
 import matplotlib
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
-import matplotlib.mlab as mlab
+#import matplotlib.mlab as mlab
 
 def main(argv):
     try:
         directory = argv[1]
         signal_type = argv[2]
     except:
-        print '''
+        print ('''
     *******************************************
 
-       Usage: box_plot.py [directory] [signal type]
+       Usage: box_plot_trop.py [directory] [signal type]
 
               directory : location of the TS folders
               signal type: strato, turbulent, combined
 
     *******************************************
-    '''
+    ''')
         sys.exit(1)
 
 
     ts_list = glob.glob(directory+'/syn*')
-    labels = []
     velocities = {}
     for n in ts_list:
         spl = n.split('syn')
@@ -42,22 +41,24 @@ def main(argv):
         year = int(year)
         if year in velocities: pass
         else:
-            print 'Working on '+str(year)+' year long time series'
+            print(('Working on '+str(year)+' year long time series'))
             spl_lst = glob.glob(directory+'/syn'+str(year)+'*')
             data_to_plot = []
             for i in spl_lst:
                 velocity_file = i +'/velocity_sim.h5'
                 f = h5py.File(velocity_file,'r')
-                dset = f['velocity'].get('velocity')
+                #dset = f['velocity'].get('velocity')
+                dset = f['velocity']
                 data_to_plot.extend(dset)
             velocities[year] = asarray(data_to_plot)
 
     sorted_velocities = collections.OrderedDict(sorted(velocities.items()))
     vel_values = []
-
-    for key, values in sorted_velocities.iteritems():
-        vel_values.append(values*1000.0) #Convert from meters to milimeters
-        labels.append(key)
+    vel_labels = []
+    #for key, values in sorted_velocities.iteritems():
+#    for key, values in sorted_velocities.items():
+#        vel_values.append(values*1000.0) #Convert from meters to milimeters
+#        vel_labels.append(key)
 # Create a figure instance
     fig, ax = plt.subplots(1)
     plt.ylabel('Propagated Error (mm/yr)',fontsize=14)
@@ -65,9 +66,21 @@ def main(argv):
     plt.ylim(-6,6)
     ax.tick_params(labelsize=12)
 
+    data_to_plot = []    
+    data_list = list(sorted_velocities.values())
+    for i in data_list:
+        q = i.flatten()*1000.0
+        data_to_plot.append(q) 
+    
+#    data_to_plot = array(data_to_plot)
+    data_labels = list(sorted_velocities.keys())
+#    data_labels = array((data_labels))
+
     medianprops = dict(linestyle=None, linewidth=0,color = 'red')
 
-    bp = ax.boxplot(vel_values,labels=labels,meanline=True,showmeans=True,showfliers=False,medianprops=medianprops,whis=[2.5, 97.5])
+    #bp = ax.boxplot(vel_values,labels=vel_labels,meanline=True,showmeans=True,showfliers=False,medianprops=medianprops,whis=[2.5, 97.5],axis=0)
+    bp = ax.boxplot(data_to_plot,labels=data_labels,meanline=True,showmeans=True,showfliers=False,medianprops=medianprops,whis=[2.5, 97.5])
+    #bp = ax.boxplot(data_to_plot)
     plt.setp(bp['boxes'], color='blue')
     plt.setp(bp['whiskers'], color='blue', linestyle='--')
     plt.setp(bp['means'], linestyle='-',color = 'red')
@@ -75,7 +88,8 @@ def main(argv):
     whis = [item.get_ydata()[1] for item in bp['whiskers']]
     n = -2
     unc = []
-    for i in range(0,(len(whis)/2)):
+
+    for i in range(0,int((len(whis))/2)):
         n=n+2
         unc.append(abs((whis[n]) - (whis[n+1])))
 
@@ -95,7 +109,7 @@ def main(argv):
     elif signal_type == 'combined':
         ax2.set_xlabel("Combined Tropospheric Delay",fontsize=16)
     else:
-        print '''
+        print ('''
     *******************************************
 
        Usage: box_plot_trop.py [directory] [signal type]
@@ -103,7 +117,7 @@ def main(argv):
               directory : location of the TS folders
               signal type: strato, turbulent, combined
     *******************************************
-    '''
+    ''')
         sys.exit(1)
 
 
