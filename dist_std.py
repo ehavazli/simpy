@@ -94,7 +94,7 @@ def main(argv):
             logFit = polyfit(log(testX),testY,1)
             testFit = logFit[0]*log(testX)+logFit[1]
             plt.errorbar(testX,testY,testYerr,c=c,marker='o',xerr = None,ls='none',label=(str(key)+' years'))
-            plt.plot(testX,testFit,c=c,label=(str(round(logFit[0],2))+str(round(logFit[1],2))+'log(D)'))
+            plt.plot(testX,testFit,c=c,label=(str(round(logFit[1],2))+'+'+str(round(logFit[0],2))+'log(D)'))
         elif modelFit == 'pow':
             # Define function for calculating a power law
             powerlaw = lambda x, amp, index: amp * (x**index)
